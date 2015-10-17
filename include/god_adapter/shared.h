@@ -41,11 +41,19 @@ private:
 template<typename T>
 struct BaseShared
 {
+    DEFAULT_OPS(BaseShared)
+
     template<typename U>
     friend struct BaseShared;
 
     template<typename U, typename T_base>
     BaseShared(Adapter<U, T_base>&& a) : shared_{std::move(a.shared_)} {}
+
+    template<typename U, typename T_base>
+    BaseShared(const Adapter<U, T_base>& a) : shared_{a.shared_} {}
+
+    template<typename U, typename T_base>
+    BaseShared(Adapter<U, T_base>& a) : shared_{a.shared_} {}
 
     template<typename... V>
     BaseShared(V&&... v) : shared_{std::make_shared<T>(std::forward<V>(v)...)} {}

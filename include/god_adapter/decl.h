@@ -20,11 +20,18 @@
 #include <boost/preprocessor/list/for_each.hpp>
 #include <boost/preprocessor/punctuation/remove_parens.hpp>
 
-#define FWD_CTOR(D_type, D_base) \
-    template<typename... V> D_type(V&&... v) : D_base{std::forward<V>(v)...} {}
+#define DEFAULT_OPS(D_type) \
+    D_type(D_type&&) = default; \
+    D_type(const D_type&) = default; \
+    D_type& operator=(D_type&&) = default; \
+    D_type& operator=(const D_type&) = default;
 
-#define FWD_CTOR_TBASE(D_type) FWD_CTOR(D_type, T_base)
-#define FWD_CTOR_ADAPTER() FWD_CTOR_TBASE(Adapter)
+#define FWD_CTOR(D_type, D_base) \
+    template<typename... V> D_type(V&&... v) : D_base{std::forward<V>(v)...} {} \
+    DEFAULT_OPS(D_type)
+
+#define FWD_CTOR_TBASE(D_type)      FWD_CTOR(D_type, T_base)
+#define FWD_CTOR_ADAPTER()          FWD_CTOR_TBASE(Adapter)
 
 // decltype(v) instead of V is a workaround for VS compiler
 #define DECL_FN_ADAPTER(D_name) \

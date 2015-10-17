@@ -19,6 +19,7 @@
 const char* const c_lock = "lock";
 const char* const c_unlock = "unlock";
 const char* const c_action = "action";
+const char* const c_copyCtor = "copy ctor";
 const char* const c_dtorDerived = "dtor derived";
 
 struct TestMutex
@@ -36,6 +37,13 @@ struct TestMutex
 
 struct Counter
 {
+    Counter() = default;
+
+    Counter(const Counter&)
+    {
+        op(c_copyCtor);
+    }
+
     void inc()
     {
         op(c_action);
@@ -66,6 +74,8 @@ BOOST_AUTO_TEST_CASE(AdapterLock)
     counter.inc();
     CHECK_OPS(c_lock, c_action, c_unlock);
     BOOST_CHECK_EQUAL(counter.counter, 1);
+    auto counter2 = counter;
+    CHECK_OPS(c_lock, c_action, c_unlock, c_copyCtor);
 }
 
 BOOST_AUTO_TEST_CASE(AdapterShared)
@@ -73,6 +83,8 @@ BOOST_AUTO_TEST_CASE(AdapterShared)
     using SharedCounter = AdaptedShared<Counter>;
     SharedCounter counter;
     counter.inc();
+    CHECK_OPS(c_action);
+    auto counter2 = counter;
     CHECK_OPS(c_action);
 }
 
@@ -90,6 +102,8 @@ BOOST_AUTO_TEST_CASE(AdapterSharedDerived)
 {
     {
         AdaptedShared<Counter> c;
+        AdaptedShared<Counter> c2 = c;
+        c2 = c;
     }
     CHECK_OPS();
     {
