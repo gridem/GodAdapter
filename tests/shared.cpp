@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(AdapterSharedMutex)
     MutexSharedCounter counter;
     CHECK_OPS();
     counter.inc();
-    BOOST_CHECK_EQUAL(ops(), (Operations{c_lock, c_action, c_unlock}));
+    CHECK_OPS(c_lock, c_action, c_unlock);
 }
 
 BOOST_AUTO_TEST_CASE(AdapterSharedDerived)
