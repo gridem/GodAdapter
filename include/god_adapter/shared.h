@@ -41,8 +41,6 @@ private:
 template<typename T>
 struct BaseShared
 {
-    DEFAULT_OPS(BaseShared)
-
     template<typename U>
     friend struct BaseShared;
 
