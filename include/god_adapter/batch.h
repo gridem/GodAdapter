@@ -56,32 +56,18 @@ template<typename T, typename T_base = T>
 using AdaptedBatch = Adapter<T, BaseBatch<T_base>>;
 
 template<typename F>
-auto invokeWrapped(F&& f) -> typename std::enable_if<
+auto invokeWrappedAny(F&& f) -> typename std::enable_if<
     std::is_same<void, decltype(f())>::value, boost::any>::type
 {
-    try
-    {
-        f();
-        return {};
-    }
-    catch (...)
-    {
-        return std::current_exception();
-    }
+    f();
+    return {};
 }
 
 template<typename F>
-auto invokeWrapped(F&& f) -> typename std::enable_if<
+auto invokeWrappedAny(F&& f) -> typename std::enable_if<
     !std::is_same<void, decltype(f())>::value, boost::any>::type
 {
-    try
-    {
-        return f();
-    }
-    catch (...)
-    {
-        return std::current_exception();
-    }
+    return f();
 }
 
 template<typename T_base>
@@ -106,10 +92,17 @@ protected:
     template<typename F, typename... V>
     auto call(F f, V&&... v)
     {
-        actions_.push_back([this, f, v...] {
-            return invokeWrapped([this, f, v...] {
-                return f(*this, std::move(v)...);
-            });
+        actions_.push_back([this, f, v...]() -> boost::any {
+            try
+            {
+                return invokeWrappedAny([this, f, v...] {
+                    return f(*this, std::move(v)...);
+                });
+            }
+            catch (...)
+            {
+                return std::current_exception();
+            }
         });
     }
 
