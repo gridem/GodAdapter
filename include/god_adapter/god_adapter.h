@@ -20,3 +20,4 @@
 #include "shared.h"
 #include "async.h"
 #include "lazy.h"
+#include "batch.h"
