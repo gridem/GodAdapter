@@ -66,11 +66,11 @@ private:
     std::shared_ptr<T> shared_;
 };
 
-template<typename T, typename T_locker = std::mutex, typename T_base = T>
+template<typename T, typename T_base = T, typename T_locker = std::mutex>
 using AdaptedLocked = Adapter<T, BaseLocker<T_base, T_locker>>;
 
 template<typename T, typename T_base = T>
 using AdaptedShared = Adapter<T, BaseShared<T_base>>;
 
-template<typename T, typename T_locker = std::mutex, typename T_base = T>
-using AdaptedSharedLocked = AdaptedShared<T, AdaptedLocked<T, T_locker, T_base>>;
+template<typename T, typename T_base = T, typename T_locker = std::mutex>
+using AdaptedSharedLocked = AdaptedShared<T, AdaptedLocked<T, T_base, T_locker>>;

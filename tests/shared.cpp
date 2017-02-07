@@ -67,7 +67,7 @@ BOOST_FIXTURE_TEST_SUITE(shared, OpsFixture)
 
 BOOST_AUTO_TEST_CASE(AdapterLock)
 {
-    using MutexCounter = AdaptedLocked<Counter, TestMutex>;
+    using MutexCounter = AdaptedLocked<Counter, Counter, TestMutex>;
 
     MutexCounter counter;
     BOOST_CHECK_EQUAL(counter.counter, 0);
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(AdapterShared)
 
 BOOST_AUTO_TEST_CASE(AdapterSharedMutex)
 {
-    using MutexSharedCounter = AdaptedSharedLocked<Counter, TestMutex>;
+    using MutexSharedCounter = AdaptedSharedLocked<Counter, Counter, TestMutex>;
 
     MutexSharedCounter counter;
     CHECK_OPS();
