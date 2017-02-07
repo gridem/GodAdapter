@@ -95,7 +95,7 @@ protected:
         actions_.push_back([this, f, v...]() -> boost::any {
             try
             {
-                return invokeWrappedAny([this, f, v...] {
+                return invokeWrappedAny([&] {
                     return f(*this, std::move(v)...);
                 });
             }
