@@ -27,14 +27,14 @@ T& single()
     return t;
 }
 
-using Operations = std::vector<const char*>;
+using Operations = std::vector<std::string>;
 
 inline Operations& ops()
 {
     return single<Operations>();
 }
 
-inline void op(const char* o)
+inline void op(const std::string& o)
 {
     ops().push_back(o);
 }

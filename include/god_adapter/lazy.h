@@ -28,9 +28,9 @@ struct BaseLazy
         // doesn't compile under MSVC 2015
         //: state_{[v...] {return T{std::move(v)...}; }}
     {
-        state_ = [v...] {
+        state_ = Creator([v...] {
             return T{std::move(v)...};
-        };
+        });
     }
 
 protected:
