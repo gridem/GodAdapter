@@ -16,11 +16,6 @@
 
 #include "ut.h"
 
-#include <boost/variant.hpp>
-#include <functional>
-
-#include <iostream>
-
 const char* const c_get = "get";
 const char* const c_set = "set";
 
@@ -130,4 +125,3 @@ BOOST_AUTO_TEST_CASE(BatchWithExceptions)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-

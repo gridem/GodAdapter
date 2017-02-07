@@ -16,9 +16,6 @@
 
 #include "ut.h"
 
-#include <boost/variant.hpp>
-#include <functional>
-
 const char* const c_action = "action";
 const char* const c_ctor = "ctor";
 const char* const c_ctorInt = "ctor int";
@@ -95,4 +92,3 @@ BOOST_AUTO_TEST_CASE(LazyWithString)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
