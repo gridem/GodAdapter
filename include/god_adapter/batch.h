@@ -43,7 +43,7 @@ protected:
     template<typename F, typename... V>
     auto call(F f, V&&... v)
     {
-        actions_.push_back([this, f, v...] {
+        actions_.push_back([this, f, v...]() mutable {
             f(*this, std::move(v)...);
         });
     }
