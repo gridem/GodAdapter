@@ -2,7 +2,7 @@
 
 #include <god_adapter/invariant.h>
 
-const char* const c_assert = "assert";
+const char* const c_invariant = "invariant";
 
 const char* const c_ctor = "ctor";
 const char* const c_mtor = "mtor";
@@ -36,7 +36,7 @@ public:
 protected:
 	void invariant()
 	{
-		op (c_assert);
+		op (c_invariant);
 	}
 };
 
@@ -48,26 +48,26 @@ BOOST_AUTO_TEST_CASE(Method)
 {
 	{
 		AdaptedChecked<Logic> logic;
-		CHECK_OPS (c_ctor, c_assert);
+		CHECK_OPS (c_ctor, c_invariant);
 
 		logic.method();
-		CHECK_OPS (c_ctor, c_assert, c_assert, c_method, c_assert);
+		CHECK_OPS (c_ctor, c_invariant, c_invariant, c_method, c_invariant);
 	}
 
-	CHECK_OPS (c_ctor, c_assert, c_assert, c_method, c_assert, c_assert, c_dtor);
+	CHECK_OPS (c_ctor, c_invariant, c_invariant, c_method, c_invariant, c_invariant, c_dtor);
 }
 
 BOOST_AUTO_TEST_CASE(MoveCtor)
 {
 	{
 		AdaptedChecked<Logic> logic1;
-		CHECK_OPS (c_ctor, c_assert);
+		CHECK_OPS (c_ctor, c_invariant);
 
 		AdaptedChecked<Logic> logic2 = std::move (logic1);
-		CHECK_OPS (c_ctor, c_assert, c_mtor, c_assert, c_assert);
+		CHECK_OPS (c_ctor, c_invariant, c_mtor, c_invariant, c_invariant);
 	}
 
-	CHECK_OPS (c_ctor, c_assert, c_mtor, c_assert, c_assert, c_assert, c_dtor, c_assert, c_dtor);
+	CHECK_OPS (c_ctor, c_invariant, c_mtor, c_invariant, c_invariant, c_invariant, c_dtor, c_invariant, c_dtor);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
