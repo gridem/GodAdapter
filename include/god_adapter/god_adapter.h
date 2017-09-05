@@ -21,3 +21,4 @@
 #include "async.h"
 #include "lazy.h"
 #include "batch.h"
+#include "invariant.h"
