@@ -50,7 +50,7 @@ struct BaseInvariantChecker : T_base
     BaseInvariantChecker(BaseInvariantChecker&& other)
         : T_base(std::move(other))
     {
-        this->invariant();
+        T_base::invariant();
         other.invariant();
     }
 
@@ -58,21 +58,21 @@ struct BaseInvariantChecker : T_base
     BaseInvariantChecker(V&&... v)
         : T_base(std::forward<V>(v)...)
     {
-        this->invariant();
+        T_base::invariant();
     }
 
     ~BaseInvariantChecker()
     {
-        this->invariant();
+        T_base::invariant();
     }
 
 protected:
     template<typename F, typename... V>
     auto call(F f, V&&... v)
     {
-        this->invariant();
+        T_base::invariant();
         auto _ = finally([this] {
-            this->invariant();
+            T_base::invariant();
         });
         return f(*this, std::forward<V>(v)...);
     }
